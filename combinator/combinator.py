@@ -3,6 +3,7 @@ from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 import os
 from pyfiglet import Figlet
+from pathlib import Path
 
 from src.combine import combine
 from src.concatenate import concatenate
@@ -29,9 +30,9 @@ def main():
 
     match directory_location:
         case 0:
-            os.getcwd()
-            os.chdir(r"../data")
-            data_directory = os.getcwd()
+            p = Path(__file__).parents[1] / "data"
+            data_directory = p.resolve()
+            print(data_directory)
         case 1:
             data_directory = inquirer.filepath(
                 message="Please enter a path:",
