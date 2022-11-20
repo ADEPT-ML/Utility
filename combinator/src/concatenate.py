@@ -66,7 +66,7 @@ def concatenate(data_directory, selected):
     df_new = df_new[new_order]
 
     new_file_name = f"{os.path.basename(selected[0]).rsplit('.', 1)[0]}_comb.xls"
-    df_new.to_excel(new_file_name, index=False)
+    df_new.to_excel(os.path.join(data_directory, new_file_name), index=False)
     print(f"Successfully combined the two files and exported to '{data_directory}/{new_file_name}'")
 
 
