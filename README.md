@@ -36,6 +36,7 @@ This utility can be used to combine different .xls files. Its main purposes are:
 ```sh
 # install requirements, start combinator
 pip3 install -r requirements.txt
+cd combinator
 python3 combinator.py
 # -> follow the instructions in the terminal
 ```
