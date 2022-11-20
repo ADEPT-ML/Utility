@@ -18,7 +18,7 @@ ADEPT ML © TU Dortmund
 
 
 def main():
-    directoryLocation = inquirer.select(
+    directory_location = inquirer.select(
         message="Where do you want to choose files from?",
         choices=[
             Choice(value=0, name="The 'data' directory in the current directory", enabled=True),
@@ -28,7 +28,7 @@ def main():
         default=0,
     ).execute()
 
-    match directoryLocation:
+    match directory_location:
         case 0:
             os.getcwd()
             os.chdir(r"data")
@@ -66,7 +66,7 @@ def main():
         instruction="(select exactly 2 using 'space' on your keyboard)",
     ).execute()
 
-    selectedUtilFunction = inquirer.select(
+    selected_util_function = inquirer.select(
         message="To you want to concatenate data from the same building or combine it from two different buildings?",
         choices=[
             Choice(value=0, name="Concatenate from same building", enabled=True),
@@ -76,7 +76,7 @@ def main():
         default=0,
     ).execute()
     
-    match selectedUtilFunction:
+    match selected_util_function:
         case 0:
             concatenate(data_directory, selected)
         case 1:
