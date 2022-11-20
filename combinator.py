@@ -31,7 +31,7 @@ def main():
     match directoryLocation:
         case 0:
             os.getcwd()
-            os.chdir(r"../data")
+            os.chdir(r"data")
             data_directory = os.getcwd()
         case 1:
             data_directory = inquirer.filepath(
@@ -59,13 +59,33 @@ def main():
         return
 
     selected = inquirer.checkbox(
-        message="Please pick the two buildings to be combined:",
+        message="Please pick the two buildings to be used for concatenation or combination:",
         choices=available_data,
         validate=lambda result: len(result) >= 2,
         invalid_message="should be exactly 2 selected",
         instruction="(select exactly 2 using 'space' on your keyboard)",
     ).execute()
 
+    selectedUtilFunction = inquirer.select(
+        message="To you want to concatenate data from the same building or combine it from two different buildings?",
+        choices=[
+            Choice(value=0, name="Concatenate from same building", enabled=True),
+            Choice(value=1, name="Combine from two different buildings"),
+            Choice(value=None, name="Exit"),
+        ],
+        default=0,
+    ).execute()
+    
+    match selectedUtilFunction:
+        case 0:
+            concatenate(data_directory, selected)
+        case 1:
+            combine(data_directory, selected)
+        case None:
+            print("cancelled")
+            return
+
+def concatenate(data_directory, selected):
     dfs = []
 
     # load dataframes
@@ -86,7 +106,10 @@ def main():
     df_new.to_excel(new_file_name)
     print(
         f"Succesfully combined the two files and exported to '{data_directory}/{new_file_name}'")
-
+    
+def combine(data_directory, selected):
+    print("NOT IMPLEMENTED YET")
+    return
 
 if __name__ == "__main__":
     main()
