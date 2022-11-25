@@ -36,6 +36,16 @@ def concatenate(data_directory, selected):
     df_new = dfs[0].combine_first(dfs[1])
     df_new = df_new.iloc[::-1]
 
+    # re-add header with OBIS Beschreibung, Kennzahl etc.
+    df_new_header = df_raw_header[[e for e in df_new.columns.values if e != "Energieart"]]
+    df_new = pd.concat([df_new_header, df_new])
+    # df_new.index.names = ['Energieart']
+    new_order = list(df_new.columns.values)
+    new_order.insert(0, new_order[-1])
+    del new_order[-1]
+    df_new = df_new[new_order]
+    
+    # correct order of time lag (change to winter time)
     index_values = [e for e in df_new.index]
     df_new.reset_index(inplace=True)
     index_values_enumerate = list(range(len(index_values)))
@@ -59,15 +69,6 @@ def concatenate(data_directory, selected):
     # print(";".join([str(e) for e in index_values_enumerate]))
     df_new = df_new.reindex(index_values_enumerate)
     df_new.reset_index()
-
-    # re-add header with OBIS Beschreibung, Kennzahl etc.
-    df_new_header = df_raw_header[[e for e in df_new.columns.values if e != "Energieart"]]
-    df_new = pd.concat([df_new_header, df_new])
-    # df_new.index.names = ['Energieart']
-    new_order = list(df_new.columns.values)
-    new_order.insert(0, new_order[-1])
-    del new_order[-1]
-    df_new = df_new[new_order]
 
     # NOTE: xlwt is deprecated and might be removed in the future. There is no other library for xls (only xlsx).
     new_file_name = f"{os.path.basename(selected[0]).rsplit('.', 1)[0]}_comb.xls"
